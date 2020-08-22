@@ -1,9 +1,10 @@
 import telebot
 import requests
-from telebot import types
 from config import *
+from telebot import types
 
 
+# возвращает погоду в указанном городе
 def get_weather(city):
     result = requests.get(url + "q=" + city + "&lang=ru&units=metric&appid=" + api_key).json()
     return result
@@ -26,7 +27,7 @@ def show_weather(message):
 
         temp = weather["main"]["temp"]
         feels_like = weather["main"]["feels_like"]
-        pressure = weather["main"]["pressure"] / 1.333     # перевод гектопаскалей в мм рт. ст.
+        pressure = weather["main"]["pressure"] / 1.333          # перевод гектопаскалей в мм рт. ст.
         humidity = weather["main"]["humidity"]
         description = weather["weather"][0]["description"]
 
@@ -40,9 +41,6 @@ def show_weather(message):
     except Exception as e:
         bot.send_message(message.chat.id, "Город не найдет!")
 
-
-bot.enable_save_next_step_handlers(delay=2)
-bot.load_next_step_handlers()
 
 if __name__ == '__main__':
     bot.polling(none_stop=True)
